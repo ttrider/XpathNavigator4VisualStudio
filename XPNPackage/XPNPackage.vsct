@@ -41,7 +41,7 @@
          must be a menu. -->
     <Groups>
 
-      <Group guid="guidXPNPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+      <Group guid="guidXPNPackageCmdSet" id="XPN" priority="0x0600">
         <Parent guid="guidXmlGroup" id="IDM_TLB_XML_EDITOR" />
       </Group>
 
@@ -60,13 +60,13 @@
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
 
-      <Button guid="guidXPNPackageCmdSet" id="cmdidMyCommand" priority="0x0100" type="Button">
+      <!--<Button guid="guidXPNPackageCmdSet" id="cmdidMyCommand" priority="0x0100" type="Button">
         <Parent guid="guidXPNPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
           <ButtonText>My Command name</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
 
 
 
@@ -74,7 +74,7 @@
 
     <Combos>
       <Combo defaultWidth="400" guid="guidXPNPackageCmdSet" id="cmdidXPathCombo" idCommandList="cmdidXPathComboList" priority="1000" type="MRUCombo">
-        <Parent guid="guidXPNPackageCmdSet" id="MyMenuGroup" />
+        <Parent guid="guidXPNPackageCmdSet" id="XPN" />
         <CommandFlag>CaseSensitive</CommandFlag>
         <CommandFlag>IconAndText</CommandFlag>
         <Strings>
@@ -108,7 +108,7 @@
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidXPNPackageCmdSet" value="{68533051-270b-4c41-bf90-79a1e1e64edd}">
 
-      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="XPN" value="0x1020" />
       <IDSymbol name="cmdidMyCommand" value="0x0100" />
 
       <IDSymbol name="cmdidXPathCombo" value="0x0102" />

@@ -179,7 +179,15 @@ namespace TTRider.XPNPackage
             try
             {
                 var view = GetActiveTextView();
+                if (view == null)
+                {
+                    return;
+                }
                 var ad = view.Properties.GetProperty<XPathAdornment>("XPathAdornmentObject");
+                if (ad == null)
+                {
+                    return;
+                }
                 ad.ClearMarkers();
 
 
@@ -259,15 +267,5 @@ namespace TTRider.XPNPackage
                     OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
             }
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

@@ -35,6 +35,8 @@ namespace TTRider.XPNPackage
             
             this.pen = new Pen(penBrush, 0.5);
             this.pen.Freeze();
+
+            
         }
 
         void OnTextBufferChanged(object sender, TextContentChangedEventArgs e)
