@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Utilities;
 
 namespace TTRider.XPNPackage
 {
-    //class XPathTopMargin : Canvas, IWpfTextViewMargin
-    class XPathTopMargin : Grid, IWpfTextViewMargin
+    class XPNForm : Grid, IWpfTextViewMargin
     {
-        public const string MarginName = "XPathNavigator";
-        private IWpfTextView _textView;
-        private bool _isDisposed = false;
+        public const string MarginName = "XPNForm";
+        private XPNDocument document;
 
+        private IWpfTextView textView;
+        private bool isDisposed;
 
-        /// <summary>
-        /// Creates a <see cref="EditorMargin1"/> for a given <see cref="IWpfTextView"/>.
-        /// </summary>
-        /// <param name="textView">The <see cref="IWpfTextView"/> to attach the margin to.</param>
-        public XPathTopMargin(IWpfTextView textView)
+        public XPNForm(IWpfTextView textView)
         {
-            _textView = textView;
+            this.textView = textView;
+            this.document = new XPNDocument(textView);
+
+            this.textView.TextBuffer.Changed += TextBuffer_Changed;
 
             this.Height = 25;
             this.ClipToBounds = true;
@@ -55,21 +57,26 @@ namespace TTRider.XPNPackage
             Grid.SetColumn(label, 0);
             Grid.SetColumn(xpath, 1);
             Grid.SetColumn(go, 2);
+
+            this.DataContext = this.document;
+            this.SetBinding(Label.IsEnabledProperty, new Binding("Error") { IsAsync = true });
+        }
+
+        private void TextBuffer_Changed(object sender, Microsoft.VisualStudio.Text.TextContentChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         private void ThrowIfDisposed()
         {
-            if (_isDisposed)
+            if (isDisposed)
                 throw new ObjectDisposedException(MarginName);
         }
 
         #region IWpfTextViewMargin Members
 
-        /// <summary>
-        /// The <see cref="Sytem.Windows.FrameworkElement"/> that implements the visual representation
-        /// of the margin.
-        /// </summary>
-        public System.Windows.FrameworkElement VisualElement
+
+        public FrameworkElement VisualElement
         {
             // Since this margin implements Canvas, this is the object which renders
             // the margin.
@@ -112,17 +119,31 @@ namespace TTRider.XPNPackage
         /// <returns>An instance of EditorMargin1 or null</returns>
         public ITextViewMargin GetTextViewMargin(string marginName)
         {
-            return (marginName == XPathTopMargin.MarginName) ? (IWpfTextViewMargin)this : null;
+            return (marginName == XPNForm.MarginName) ? (IWpfTextViewMargin)this : null;
         }
 
         public void Dispose()
         {
-            if (!_isDisposed)
+            if (!isDisposed)
             {
                 GC.SuppressFinalize(this);
-                _isDisposed = true;
+                isDisposed = true;
             }
         }
         #endregion
+    }
+
+    [Export(typeof(IWpfTextViewMarginProvider))]
+    [Name(XPNForm.MarginName)]
+    [Order(After = PredefinedMarginNames.Bottom)] //Ensure that the margin occurs below the horizontal scrollbar
+    [MarginContainer(PredefinedMarginNames.Bottom)] //Set the container to the bottom of the editor window
+    [ContentType("xml")] //Show this margin for all text-based types
+    [TextViewRole(PredefinedTextViewRoles.Interactive)]
+    internal sealed class XPathTopMarginFactory : IWpfTextViewMarginProvider
+    {
+        public IWpfTextViewMargin CreateMargin(IWpfTextViewHost textViewHost, IWpfTextViewMargin containerMargin)
+        {
+            return new XPNForm(textViewHost.TextView);
+        }
     }
 }

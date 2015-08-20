@@ -72,14 +72,6 @@ namespace TTRider.XPNPackage
         {
             XPathExpression exp = XPathExpression.Compile(query, this.namespaceManager);
 
-            //var qb = exp.GetType().Assembly.GetType("MS.Internal.Xml.XPath.QueryBuilder");
-
-            //var xpParserType = exp.GetType().Assembly.GetType("MS.Internal.Xml.XPath.XPathParser");
-
-            //var mt = xpParserType.GetMethod("ParseXPathExpresion", BindingFlags.Public | BindingFlags.Static);
-            //dynamic ast = mt.Invoke(null, new object[]{query});
-
-
             foreach (XPathNavigator item in this.root.Select(exp))
             {
                 switch (item.NodeType)
