@@ -41,7 +41,10 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-/XPNPackage/bin/Debug
-/XPNPackage/obj/Debug
+/XPNPackage/bin
+/XPNPackage/obj
 *.suo
 *.user
+/Backup
+/EditorMargin1
+/UpgradeLog.htm
