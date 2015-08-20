@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 
 namespace TTRider.XPNPackage
 {
-    class XPathTopMargin : Canvas, IWpfTextViewMargin
+    //class XPathTopMargin : Canvas, IWpfTextViewMargin
+    class XPathTopMargin : Grid, IWpfTextViewMargin
     {
         public const string MarginName = "XPathNavigator";
         private IWpfTextView _textView;
@@ -26,13 +30,31 @@ namespace TTRider.XPNPackage
 
             this.Height = 25;
             this.ClipToBounds = true;
-            this.Background = new SolidColorBrush(Colors.Red);
 
-            Label label = new Label();
-            label.Background = new SolidColorBrush(Colors.LightGreen);
-            label.Content = "Hello World!";
+            this.SetResourceReference(Control.BackgroundProperty, EnvironmentColors.ScrollBarBackgroundBrushKey);
+
+            this.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            this.ColumnDefinitions.Add(new ColumnDefinition());
+            this.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            var label = new Label { Content = "XPath" };
             this.Children.Add(label);
 
+            var xpath = new TextBox()
+            {
+                //Padding = new Thickness(0, 0.5, 0, 0.5)
+            };
+
+            this.Children.Add(xpath);
+
+
+            var go = new Button() { Content = "→" };
+            this.Children.Add(go);
+
+
+            Grid.SetColumn(label, 0);
+            Grid.SetColumn(xpath, 1);
+            Grid.SetColumn(go, 2);
         }
 
         private void ThrowIfDisposed()
