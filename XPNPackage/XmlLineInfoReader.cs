@@ -6,16 +6,11 @@ namespace TTRider.XPNPackage
 {
     internal class XmlLineInfoReader : XmlTextReader
     {
-        readonly List<XmlNodeInfo> elements = new List<XmlNodeInfo>();
+        public List<XmlNodeInfo> Elements { get; } = new List<XmlNodeInfo>();
 
         public XmlLineInfoReader(TextReader s)
             : base(s)
         {
-        }
-
-        public List<XmlNodeInfo> Elements
-        {
-            get { return this.elements; }
         }
 
         public override bool Read()
@@ -27,7 +22,7 @@ namespace TTRider.XPNPackage
                 if (this.NodeType == XmlNodeType.Element)
                 {
                     var elInfo = new XmlElementInfo(this.LineNumber, this.LinePosition, this.Name);
-                    elements.Add(elInfo);
+                    this.Elements.Add(elInfo);
 
                     // let's get information about attributes
                     if (this.HasAttributes && this.MoveToFirstAttribute())

@@ -10,7 +10,6 @@ namespace TTRider.XPNPackage
         readonly Dictionary<XPathNavigator, XmlNodeInfo> navigators = new Dictionary<XPathNavigator, XmlNodeInfo>(new XPathNavComparer());
         readonly XPathNavigator root;
         readonly XmlNamespaceManager namespaceManager;
-        readonly bool hasDefaultNamespace;
 
         public XPathTextManager(TextReader reader, string prefixForDefault)
         {
@@ -38,7 +37,7 @@ namespace TTRider.XPNPackage
                             if (string.IsNullOrEmpty(de.Key))
                             {
                                 this.namespaceManager.AddNamespace(prefixForDefault, de.Value);
-                                this.hasDefaultNamespace = true;
+                                this.HasDefaultNamespace = true;
                             }
                             else
                             {
@@ -118,6 +117,6 @@ namespace TTRider.XPNPackage
             }
         }
 
-        public bool HasDefaultNamespace { get { return this.hasDefaultNamespace; } }
+        public bool HasDefaultNamespace { get; }
     }
 }
